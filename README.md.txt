@@ -10,12 +10,12 @@ Highly customizable phone input component with auto formatting.
 
 ## Installation
 ```shell-script
-npm install react-native-phone-input --save
+npm install react-native-phone-input-2 --save
 ```
 
 ## Usage
 ```jsx
-import PhoneInput from 'react-native-phone-input'
+import PhoneInput from 'react-native-phone-input-2'
 
 <PhoneInput
   country={'us'}

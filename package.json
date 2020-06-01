@@ -1,5 +1,5 @@
 {
-  "name": "react-native-phone-input",
+  "name": "react-native-phone-input-2",
   "version": "1.0.0",
   "description": "library for react-native phone input",
   "main": "src/index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bachphuc/react-native-phone-input.git"
+    "url": "git+https://github.com/bachphuc/react-native-phone-input-2.git"
   },
   "keywords": [
     "react-native",
@@ -17,9 +17,9 @@
   "author": "phuclb",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/bachphuc/react-native-phone-input/issues"
+    "url": "https://github.com/bachphuc/react-native-phone-input-2/issues"
   },
-  "homepage": "https://github.com/bachphuc/react-native-phone-input#readme",
+  "homepage": "https://github.com/bachphuc/react-native-phone-input-2#readme",
   "devDependencies": {
     "react": "^16.12.0",
     "react-native": "^0.59.1"
