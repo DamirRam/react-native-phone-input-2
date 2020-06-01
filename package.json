@@ -1,0 +1,34 @@
+{
+  "name": "react-native-phone-input",
+  "version": "1.0.0",
+  "description": "library for react-native phone input",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bachphuc/react-native-phone-input.git"
+  },
+  "keywords": [
+    "react-native",
+    "phone-input"
+  ],
+  "author": "phuclb",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bachphuc/react-native-phone-input/issues"
+  },
+  "homepage": "https://github.com/bachphuc/react-native-phone-input#readme",
+  "devDependencies": {
+    "react": "^16.12.0",
+    "react-native": "^0.59.1"
+  },
+  "dependencies": {
+    "lodash.debounce": "^4.0.8",
+    "lodash.memoize": "^4.1.2",
+    "lodash.reduce": "^4.6.0",
+    "lodash.startswith": "^4.2.1",
+    "prop-types": "^15.7.2"
+  }
+}
