@@ -1,5 +1,5 @@
 {
-  "name": "react-native-phone-input-2",
+  "name": "@trieuquangphuc/react-native-phone-input-2",
   "version": "1.0.0",
   "description": "library for react-native phone input",
   "main": "src/index.js",
