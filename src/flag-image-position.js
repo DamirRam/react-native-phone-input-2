@@ -934,7 +934,11 @@
      "vu": {
          "x": 384,
          "y": 336
-     }
+     },
+     "xk": {
+         "x": 144,
+         "y": 0
+    }
  }
 
  export default FLAG_IMAGE_POSITION;

@@ -35,12 +35,17 @@ class PhoneInput extends React.Component {
         searchPlaceholder: PropTypes.string,
         searchNotFound: PropTypes.string,
         disabled: PropTypes.bool,
+        cancelButtonText: PropTypes.string,
 
         containerStyle: PropTypes.object,
         inputStyle: PropTypes.object,
         buttonStyle: PropTypes.object,
         dropdownStyle: PropTypes.object,
         searchStyle: PropTypes.object,
+        arrowColor: PropTypes.string,
+        cancelButtonStyle: PropTypes.object,
+        countryNameStyle: PropTypes.object,
+        countryDialCodeStyle: PropTypes.object,
 
         containerClass: PropTypes.string,
         inputClass: PropTypes.string,
@@ -63,6 +68,7 @@ class PhoneInput extends React.Component {
         countryCodeEditable: PropTypes.bool,
         enableSearch: PropTypes.bool,
         disableSearchIcon: PropTypes.bool,
+        showSearchInput: PropTypes.bool,
 
         regions: PropTypes.oneOfType([
             PropTypes.string, PropTypes.arrayOf(PropTypes.string)
@@ -90,8 +96,6 @@ class PhoneInput extends React.Component {
         onChange: PropTypes.func,
         onFocus: PropTypes.func,
         onBlur: PropTypes.func,
-        onClick: PropTypes.func,
-        onKeyDown: PropTypes.func,
         isValid: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
         defaultErrorMessage: PropTypes.string
     }
@@ -109,12 +113,17 @@ class PhoneInput extends React.Component {
         searchNotFound: 'No entries to show',
         flagsImagePath: './flags.png',
         disabled: false,
+        cancelButtonText: 'Cancel',
 
         containerStyle: {},
         inputStyle: {},
         buttonStyle: {},
         dropdownStyle: {},
         searchStyle: {},
+        arrowColor: '#70544F',
+        cancelButtonStyle: {},
+        countryNameStyle: {},
+        countryDialCodeStyle: {},
 
         containerClass: '',
         inputClass: '',
@@ -131,6 +140,7 @@ class PhoneInput extends React.Component {
         countryCodeEditable: true,
         enableSearch: false,
         disableSearchIcon: false,
+        showSearchInput: false,
 
         regions: '',
 
@@ -154,7 +164,6 @@ class PhoneInput extends React.Component {
         enableClickOutside: true,
         showDropdown: false,
 
-        isValid: true, // (value, selectedCountry, onlyCountries, hiddenAreaCodes) => true | false | 'Message'
         defaultErrorMessage: '',
 
         onEnterKeyPress: null, // null or function
@@ -279,6 +288,7 @@ class PhoneInput extends React.Component {
             }
         
         const secondBestGuess = onlyCountries.find(o => o.iso2 == country);
+
         if (inputNumber.trim() === '') 
             return secondBestGuess;
         
@@ -425,8 +435,12 @@ class PhoneInput extends React.Component {
         }
 
         // Always close brackets
-        if (formattedNumber.includes('(') && !formattedNumber.includes(')')) 
-            formattedNumber += ')';
+        // if (formattedNumber.includes('(') && !formattedNumber.includes(')')) 
+        //     formattedNumber += ')';
+
+        if(!formattedNumber.startsWith(this.props.prefix + country.dialCode)) {
+           formattedNumber = this.props.prefix + country.dialCode + formattedNumber.replace(this.props.prefix, '');
+        }
         return formattedNumber;
     }
 
@@ -525,6 +539,8 @@ class PhoneInput extends React.Component {
                 freezeSelection = false;
             }
             formattedNumber = this.formatNumber(inputNumber, newSelectedCountry);
+
+
             newSelectedCountry = newSelectedCountry.dialCode
                 ? newSelectedCountry
                 : selectedCountry;
@@ -541,22 +557,9 @@ class PhoneInput extends React.Component {
         }, () => {
 
             if (onChange) 
-                onChange(formattedNumber.replace(/[^0-9]+/g, ''), this.getCountryData(), value, formattedNumber);
+                onChange(formattedNumber.replace(/[^0-9]+/g, ''), this.getCountryData(), value, this.props.prefix + formattedNumber);
             }
         );
-    }
-
-    handleInputClick = (e) => {
-        this.setState({showDropdown: false});
-        if (this.props.onClick) 
-            this.props.onClick(e, this.getCountryData());
-        }
-    
-    handleDoubleClick = (e) => {
-        const len = e.target.value.length;
-        e
-            .target
-            .setSelectionRange(0, len);
     }
 
     handleFlagItemClick = (country, e) => {
@@ -589,7 +592,7 @@ class PhoneInput extends React.Component {
         }, () => {
             this.cursorToEnd();
             if (this.props.onChange) 
-                this.props.onChange(formattedNumber.replace(/[^0-9]+/g, ''), this.getCountryData(), e, formattedNumber);
+                this.props.onChange(formattedNumber.replace(/[^0-9]+/g, ''), this.getCountryData(), e, this.props.prefix + formattedNumber);
             }
         );
     }
@@ -660,85 +663,6 @@ class PhoneInput extends React.Component {
 
         this.setState({queryString: '', highlightCountryIndex: probableCandidateIndex});
     }
-
-    handleKeydown = (e) => {
-        const {keys} = this.props;
-        const {target: {
-                className
-            }} = e;
-
-        if (className.includes('flag-dropdown') && e.which === keys.ENTER && !this.state.showDropdown) 
-            return this.handleFlagDropdownClick();
-        if (className.includes('form-control') && (e.which === keys.ENTER || e.which === keys.ESC)) 
-            return e.target.blur();
-        
-        if (!this.state.showDropdown || this.props.disabled) 
-            return;
-        if (className.includes('search-box')) {
-            if (e.which !== keys.UP && e.which !== keys.DOWN && e.which !== keys.ENTER) {
-                if (e.which === keys.ESC && e.target.value === '') {
-                    // do nothing // if search field is empty, pass event (close dropdown)
-                } else {
-                    return; // don't process other events coming from the search field
-                }
-            }
-        }
-
-        // ie hack
-        if (e.preventDefault) {
-            e.preventDefault();
-        } else {
-            e.returnValue = false;
-        }
-
-        const moveHighlight = (direction) => {
-            this.setState({
-                highlightCountryIndex: this.getHighlightCountryIndex(direction)
-            }, () => {
-                this.scrollTo(this.getElement(this.state.highlightCountryIndex), true);
-            });
-        }
-
-        switch (e.which) {
-            case keys.DOWN:
-                moveHighlight(1);
-                break;
-            case keys.UP:
-                moveHighlight(-1);
-                break;
-            case keys.ENTER:
-                if (this.props.enableSearch) {
-                    this.handleFlagItemClick(this.getSearchFilteredCountries()[this.state.highlightCountryIndex] || this.getSearchFilteredCountries()[0], e);
-                } else {
-                    this.handleFlagItemClick([
-                        ...this.state.preferredCountries,
-                        ...this.state.onlyCountries
-                    ][this.state.highlightCountryIndex], e);
-                }
-                break;
-            case keys.ESC:
-                this.setState({
-                    showDropdown: false
-                }, this.cursorToEnd);
-                break;
-            default:
-                if ((e.which >= keys.A && e.which <= keys.Z) || e.which === keys.SPACE) {
-                    this.setState({
-                        queryString: this.state.queryString + String.fromCharCode(e.which)
-                    }, this.state.debouncedQueryStingSearcher);
-                }
-        }
-    }
-
-    handleInputKeyDown = (e) => {
-        const {keys, onEnterKeyPress, onKeyDown} = this.props;
-        if (e.which === keys.ENTER) {
-            if (onEnterKeyPress) 
-                onEnterKeyPress(e);
-            }
-        if (onKeyDown) 
-            onKeyDown(e);
-        }
     
     handleClickOutside = (e) => {
         if (this.dropdownRef && !this.dropdownContainerRef.contains(e.target)) {
@@ -805,7 +729,7 @@ class PhoneInput extends React.Component {
                     <View style={styles.modal_option}>
                         <View
                             style={{
-                            width: 25,
+                            width: 23,
                             height: 20,
                             overflow: 'hidden'
                         }}>
@@ -822,8 +746,8 @@ class PhoneInput extends React.Component {
                                 : null}
                         </View>
 
-                        <Text style={styles.option_country_name}>{this.getDropdownCountryName(country)}</Text>
-                        <Text style={styles.option_dial_code}>{country.format
+                        <Text style={[styles.option_country_name, this.props.countryNameStyle]}>{this.getDropdownCountryName(country)}</Text>
+                        <Text style={[styles.option_dial_code, this.props.countryDialCodeStyle]}>{country.format
                                 ? this.formatNumber(country.dialCode, country)
                                 : (prefix + country.dialCode)}</Text>
                     </View>
@@ -831,9 +755,9 @@ class PhoneInput extends React.Component {
             );
         });
 
-        const dashedLi = (<li key={'dashes'} className='divider'/>);
+        const divider = (<View style={styles.divider}/>);
         // let's insert a dashed line in between preferred countries and the rest
-        (preferredCountries.length > 0) && (!enableSearch || enableSearch && !searchValue.trim()) && countryDropdownList.splice(preferredCountries.length, 0, dashedLi);
+        (preferredCountries.length > 0) && (!enableSearch || enableSearch && !searchValue.trim()) && countryDropdownList.splice(preferredCountries.length, 0, divider);
 
         return (
             <View>
@@ -856,45 +780,34 @@ class PhoneInput extends React.Component {
         this.setState({isShowCountriesModal: false})
     }
 
-    doSearch = () => {
-        
-    }
-
     render() {
+
         const {onlyCountries, selectedCountry, showDropdown, formattedNumber, hiddenAreaCodes} = this.state;
         const {isValid, defaultErrorMessage, isDebug} = this.props;
 
-        let isValidValue,
-            errorMessage;
-        if (typeof isValid === 'boolean') {
-            isValidValue = isValid;
-        } else {
-            const isValidProcessed = isValid(formattedNumber.replace(/\D/g, ''), selectedCountry, onlyCountries, hiddenAreaCodes)
-            if (typeof isValidProcessed === 'boolean') {
-                isValidValue = isValidProcessed;
-                if (isValidValue === false) 
-                    errorMessage = defaultErrorMessage
-            } else { // typeof === 'string'
-                isValidValue = false;
-                errorMessage = isValidProcessed;
+        let errorMessage;
+            if(isValid) {
+              const isValidValue = isValid(formattedNumber.replace(/\D/g, ''), selectedCountry, onlyCountries, hiddenAreaCodes);
+
+              if (isValidValue === false) {
+                  errorMessage = defaultErrorMessage
+              }
             }
-        }
 
         return (
             <View
                 style={[
                 styles.container, this.props.style || this.props.containerStyle
             ]}>
-
                 <View style={styles.row}>
                     {errorMessage && <View >
                         <Text>{errorMessage}</Text>
                     </View>}
 
-                    <TouchableOpacity onPress={this.showCountriesModal}>
+                    <TouchableOpacity onPress={this.showCountriesModal} style={[styles.buttonStyle, this.props.buttonStyle]}>
                         <View
                             style={{
-                            width: 25,
+                            width: 23,
                             height: 20,
                             overflow: 'hidden'
                         }}>
@@ -910,16 +823,18 @@ class PhoneInput extends React.Component {
                                     }}/>
                                 : null}
                         </View>
+                        <View style={this.state.isShowCountriesModal ? styles.activeTriangleContainer : styles.triangleContainer}><View style={[styles.triangle, {borderTopColor: this.props.arrowColor}]}/></View>
                     </TouchableOpacity>
                     <TextInput
                         style={[styles.input, this.props.inputStyle]}
+                        maxLength={selectedCountry.format.length}
                         onChangeText={this.handleInput}
                         onFocus={this.handleInputFocus}
                         onBlur={this.handleInputBlur}
                         onCopy={this.handleInputCopy}
                         value={formattedNumber}
                         ref={el => this.numberInputRef = el}
-                        onKeyDown={this.handleInputKeyDown}
+                        onKeyPress={this.handleInputKeyDown}
                         placeholder={this.props.placeholder}
                         keyboardType='phone-pad'
                         returnKeyType='done'
@@ -936,15 +851,14 @@ class PhoneInput extends React.Component {
                     onRequestClose={this._onCloseCountriesModal}>
                     <View style={styles.modal}>
                         <View style={styles.modal_content}>
+                          {this.props.showSearchInput ?                         
                             <View style={styles.modal_search_box}>
                                 <TextInput style={styles.modal_search_input} underlineColorAndroid='transparent' placeholder='Search country...' value={this.state.searchValue} onChangeText={this.handleSearchChange} placeholderTextColor='#666' />
                                 <TouchableOpacity style={styles.modal_btn_search} onPress={this.doSearch}>
                                     <Text>Search</Text>
                                 </TouchableOpacity>
-                            </View>
-                            <View style={{
-                                flex: 1
-                            }}>
+                            </View> : null}
+                            <View style={{flex: 1}}>
                                 <ScrollView>
                                     <View style={styles.modal_list}>
                                         {this.getCountryDropdownList()}
@@ -954,7 +868,7 @@ class PhoneInput extends React.Component {
                             <View style={styles.modal_control}>
                                 <TouchableOpacity onPress={this._onCloseCountriesModal}>
                                     <View style={styles.modal_btn_close}>
-                                        <Text style={styles.modal_btn_close_text}>Cancel</Text>
+                                        <Text style={this.props.cancelButtonStyle}>{this.props.cancelButtonText}</Text>
                                     </View>
                                 </TouchableOpacity>
                             </View>
@@ -967,6 +881,15 @@ class PhoneInput extends React.Component {
 }
 
 export default PhoneInput;
+
+const triangleContainerBase = {
+    height: 8,
+    width: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingLeft: 8,
+    paddingTop: 2,
+};
 
 var styles = StyleSheet.create({
     container: {},
@@ -990,14 +913,23 @@ var styles = StyleSheet.create({
     },
     modal_option: {
         flexDirection: 'row',
-        height: 30
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        height: 40,
+        paddingHorizontal: 16
     },
     modal_list: {
-        padding: 16
+        paddingVertical: 16
+    },
+    divider: {
+       width: '100%',
+       marginVertical: 5,
+       borderWidth: 0.5,
+       borderColor: '#70544F',
     },
     option_country_name: {
         flex: 1,
-        marginLeft: 5, 
+        marginLeft: 8, 
         marginRight: 8
     },
     modal_control: {
@@ -1007,9 +939,6 @@ var styles = StyleSheet.create({
     },
     modal_btn_close: {
         paddingLeft: 16,
-    },
-    modal_btn_close_text: {
-        textTransform: 'uppercase'
     },
     modal_search_box: {
         paddingLeft: 16,
@@ -1030,5 +959,28 @@ var styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         alignContent: 'center'
+    },
+    triangleContainer: {
+        ...triangleContainerBase,
+    },
+    activeTriangleContainer: {
+        ...triangleContainerBase,
+        transform: [{ rotateX: '180deg' }]
+    },
+    triangle: {
+        width: 10,
+        height: 6,
+        borderBottomWidth: 0,
+        borderRightWidth: 5,
+        borderLeftWidth: 5,
+        borderTopWidth: 6,
+        borderColor: 'transparent',
+    },
+    buttonStyle: {
+        height: '100%',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingLeft: 8,
     }
 })
