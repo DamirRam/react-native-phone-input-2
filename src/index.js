@@ -96,6 +96,7 @@ class PhoneInput extends React.Component {
         onChange: PropTypes.func,
         onFocus: PropTypes.func,
         onBlur: PropTypes.func,
+        onEndEditing: PropTypes.func,
         isValid: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
         defaultErrorMessage: PropTypes.string
     }
@@ -557,7 +558,7 @@ class PhoneInput extends React.Component {
         }, () => {
 
             if (onChange) 
-                onChange(formattedNumber.replace(/[^0-9]+/g, ''), this.getCountryData(), value, this.props.prefix + formattedNumber);
+                onChange(this.props.prefix + formattedNumber.replace(/[^0-9]+/g, ''), this.getCountryData(), value, this.props.prefix + formattedNumber);
             }
         );
     }
@@ -636,6 +637,19 @@ class PhoneInput extends React.Component {
             .clipboardData
             .setData('text/plain', text);
         e.preventDefault();
+    }
+
+    onEndEditing = (e) => {
+      if(this.props.onEndEditing) {
+        const {dialCode, format, name} = this.state.selectedCountry;
+
+        this.props.onEndEditing(e, {
+          countryCode: this.state.selectedCountry.iso2,
+          dialCode,
+          format,
+          name
+        });
+      }
     }
 
     getHighlightCountryIndex = (direction) => {
@@ -832,6 +846,7 @@ class PhoneInput extends React.Component {
                         onFocus={this.handleInputFocus}
                         onBlur={this.handleInputBlur}
                         onCopy={this.handleInputCopy}
+                        onEndEditing={this.onEndEditing}
                         value={formattedNumber}
                         ref={el => this.numberInputRef = el}
                         onKeyPress={this.handleInputKeyDown}
