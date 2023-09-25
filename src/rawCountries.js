@@ -27,8 +27,7 @@ const rawCountries = [
     'Albania',
     ['europe'],
     'al',
-    '355',
-    '... ... ....'
+    '355'
   ],
   [
     'Algeria',
@@ -40,8 +39,7 @@ const rawCountries = [
     'Andorra',
     ['europe'],
     'ad',
-    '376',
-    '... ...'
+    '376'
   ],
   [
     'Angola',
@@ -86,8 +84,7 @@ const rawCountries = [
     'Austria',
     ['europe', 'eu-union'],
     'at',
-    '43',
-    '.... .......'
+    '43'
   ],
   [
     'Azerbaijan',
@@ -131,7 +128,7 @@ const rawCountries = [
     ['europe', 'eu-union'],
     'be',
     '32',
-    '.... .. .. ..'
+    '... .. .. ..'
   ],
   [
     'Belize',
@@ -161,8 +158,7 @@ const rawCountries = [
     'Bosnia and Herzegovina',
     ['europe', 'ex-yugos'],
     'ba',
-    '387',
-    '.. .. .. ..'
+    '387'
   ],
   [
     'Botswana',
@@ -193,8 +189,7 @@ const rawCountries = [
     'Bulgaria',
     ['europe', 'eu-union'],
     'bg',
-    '359',
-    '.. ... .. ..'
+    '359'
   ],
   [
     'Burkina Faso',
@@ -308,8 +303,7 @@ const rawCountries = [
     'Croatia',
     ['europe', 'eu-union', 'ex-yugos'],
     'hr',
-    '385',
-    '. .... ....'
+    '385'
   ],
   [
     'Cuba',
@@ -336,8 +330,7 @@ const rawCountries = [
     'Czech Republic',
     ['europe', 'eu-union'],
     'cz',
-    '420',
-    '... ... ...'
+    '420'
   ],
   [
     'Denmark',
@@ -402,7 +395,7 @@ const rawCountries = [
     ['europe', 'eu-union', 'ex-ussr', 'baltic'],
     'ee',
     '372',
-    '.... ... ...'
+    '.... ......'
   ],
   [
     'Ethiopia',
@@ -477,8 +470,7 @@ const rawCountries = [
     'Greece',
     ['europe', 'eu-union'],
     'gr',
-    '30',
-    '... ... ....'
+    '30'
   ],
   [
     'Grenada',
@@ -648,8 +640,7 @@ const rawCountries = [
     'Kosovo',
     ['europe', 'ex-yugos'],
     'xk',
-    '383',
-    '.. ... ...'
+    '383'
   ],
   [
     'Kuwait',
@@ -673,8 +664,7 @@ const rawCountries = [
     'Latvia',
     ['europe', 'eu-union', 'ex-ussr', 'baltic'],
     'lv',
-    '371',
-    '... ... .. ..'
+    '371'
   ],
   [
     'Lebanon',
@@ -704,22 +694,19 @@ const rawCountries = [
     'Liechtenstein',
     ['europe'],
     'li',
-    '423',
-    '... .. ..'
+    '423'
   ],
   [
     'Lithuania',
     ['europe', 'eu-union', 'ex-ussr', 'baltic'],
     'lt',
-    '370',
-    '. ... .. ...'
+    '370'
   ],
   [
     'Luxembourg',
     ['europe', 'eu-union'],
     'lu',
-    '352',
-    '... .. ...'
+    '352'
   ],
   [
     'Macau',
@@ -731,8 +718,7 @@ const rawCountries = [
     'Macedonia',
     ['europe', 'ex-yugos'],
     'mk',
-    '389',
-    '.... . .. ..'
+    '389'
   ],
   [
     'Madagascar',
@@ -769,8 +755,7 @@ const rawCountries = [
     'Malta',
     ['europe', 'eu-union'],
     'mt',
-    '356',
-    '........'
+    '356'
   ],
   [
     'Marshall Islands',
@@ -821,8 +806,7 @@ const rawCountries = [
     'Monaco',
     ['europe'],
     'mc',
-    '377',
-    '........'
+    '377'
   ],
   [
     'Mongolia',
@@ -834,8 +818,7 @@ const rawCountries = [
     'Montenegro',
     ['europe', 'ex-yugos'],
     'me',
-    '382',
-    '........'
+    '382'
   ],
   [
     'Morocco',
@@ -991,8 +974,7 @@ const rawCountries = [
     'Portugal',
     ['europe', 'eu-union'],
     'pt',
-    '351',
-    '... ... ...'
+    '351'
   ],
   [
     'Puerto Rico',
@@ -1018,8 +1000,7 @@ const rawCountries = [
     'Romania',
     ['europe', 'eu-union'],
     'ro',
-    '40',
-    '..........'
+    '40'
   ],
   [
     'Russia',
@@ -1063,8 +1044,7 @@ const rawCountries = [
     'San Marino',
     ['europe'],
     'sm',
-    '378',
-    '..........'
+    '378'
   ],
   [
     'São Tomé and Príncipe',
@@ -1088,8 +1068,7 @@ const rawCountries = [
     'Serbia',
     ['europe', 'ex-yugos'],
     'rs',
-    '381',
-    '.... ....'
+    '381'
   ],
   [
     'Seychelles',
@@ -1114,15 +1093,13 @@ const rawCountries = [
     'Slovakia',
     ['europe', 'eu-union'],
     'sk',
-    '421',
-    '.... ... ...'
+    '421'
   ],
   [
     'Slovenia',
     ['europe', 'eu-union', 'ex-yugos'],
     'si',
-    '386',
-    '... ......'
+    '386'
   ],
   [
     'Solomon Islands',
