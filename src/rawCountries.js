@@ -87,7 +87,7 @@ const rawCountries = [
     ['europe', 'eu-union'],
     'at',
     '43',
-    '... ... ....'
+    '... ... .....'
   ],
   [
     'Azerbaijan',
