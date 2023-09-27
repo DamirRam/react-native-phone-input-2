@@ -558,7 +558,7 @@ class PhoneInput extends React.Component {
         }, () => {
 
             if (onChange) 
-                onChange(this.props.prefix + formattedNumber.replace(/[^0-9]+/g, ''), this.getCountryData(), value, this.props.prefix + formattedNumber);
+                onChange(this.props.prefix + formattedNumber.replace(/[^0-9]+/g, ''), this.getCountryData(), value, formattedNumber);
             }
         );
     }
