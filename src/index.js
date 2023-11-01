@@ -46,6 +46,7 @@ class PhoneInput extends React.Component {
         cancelButtonStyle: PropTypes.object,
         countryNameStyle: PropTypes.object,
         countryDialCodeStyle: PropTypes.object,
+        modalRootStyle: PropTypes.object,
 
         containerClass: PropTypes.string,
         inputClass: PropTypes.string,
@@ -797,7 +798,7 @@ class PhoneInput extends React.Component {
     render() {
 
         const {onlyCountries, selectedCountry, showDropdown, formattedNumber, hiddenAreaCodes} = this.state;
-        const {isValid, defaultErrorMessage, isDebug} = this.props;
+        const {isValid, defaultErrorMessage, isDebug, modalRootStyle} = this.props;
 
         let errorMessage;
             if(isValid) {
@@ -864,31 +865,31 @@ class PhoneInput extends React.Component {
                 <Modal
                     visible={this.state.isShowCountriesModal}
                     onRequestClose={this._onCloseCountriesModal}>
-                    <View style={styles.modal}>
-                        <View style={styles.modal_content}>
-                          {this.props.showSearchInput ?                         
-                            <View style={styles.modal_search_box}>
-                                <TextInput style={styles.modal_search_input} underlineColorAndroid='transparent' placeholder='Search country...' value={this.state.searchValue} onChangeText={this.handleSearchChange} placeholderTextColor='#666' />
-                                <TouchableOpacity style={styles.modal_btn_search} onPress={this.doSearch}>
-                                    <Text>Search</Text>
-                                </TouchableOpacity>
-                            </View> : null}
-                            <View style={{flex: 1}}>
-                                <ScrollView>
-                                    <View style={styles.modal_list}>
-                                        {this.getCountryDropdownList()}
-                                    </View>
-                                </ScrollView>
-                            </View>
-                            <View style={styles.modal_control}>
-                                <TouchableOpacity onPress={this._onCloseCountriesModal}>
-                                    <View style={styles.modal_btn_close}>
-                                        <Text style={this.props.cancelButtonStyle}>{this.props.cancelButtonText}</Text>
-                                    </View>
-                                </TouchableOpacity>
+                        <View style={[styles.modal, modalRootStyle]}>
+                            <View style={styles.modal_content}>
+                              {this.props.showSearchInput ?                         
+                                <View style={styles.modal_search_box}>
+                                    <TextInput style={styles.modal_search_input} underlineColorAndroid='transparent' placeholder='Search country...' value={this.state.searchValue} onChangeText={this.handleSearchChange} placeholderTextColor='#666' />
+                                    <TouchableOpacity style={styles.modal_btn_search} onPress={this.doSearch}>
+                                        <Text>Search</Text>
+                                    </TouchableOpacity>
+                                </View> : null}
+                                <View style={{flex: 1}}>
+                                    <ScrollView>
+                                        <View style={styles.modal_list}>
+                                            {this.getCountryDropdownList()}
+                                        </View>
+                                    </ScrollView>
+                                </View>
+                                <View style={styles.modal_control}>
+                                    <TouchableOpacity onPress={this._onCloseCountriesModal}>
+                                        <View style={styles.modal_btn_close}>
+                                            <Text style={this.props.cancelButtonStyle}>{this.props.cancelButtonText}</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
-                    </View>
                 </Modal>
             </View>
         );
