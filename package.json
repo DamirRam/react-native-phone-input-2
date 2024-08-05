@@ -29,6 +29,7 @@
     "lodash.memoize": "^4.1.2",
     "lodash.reduce": "^4.6.0",
     "lodash.startswith": "^4.2.1",
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.7.2",
+    "react-native-js-only-modal": "^1.0.8"
   }
 }

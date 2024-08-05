@@ -6,10 +6,10 @@ import {
     TextInput,
     Image,
     StyleSheet,
-    Modal,
     TouchableOpacity,
     ScrollView
 } from 'react-native';
+import { Modal } from 'react-native-js-only-modal';
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import memoize from 'lodash.memoize';
@@ -861,10 +861,16 @@ class PhoneInput extends React.Component {
                 {isDebug ? <Text>{selectedCountry
                         ? `${selectedCountry.name}: + ${selectedCountry.dialCode}, country_code: ${selectedCountry.countryCode}`
                         : ''} {JSON.stringify(selectedCountry)}</Text> : null}
-
                 <Modal
-                    visible={this.state.isShowCountriesModal}
-                    onRequestClose={this._onCloseCountriesModal}>
+                        style={styles.contentContainerStyle}
+                        backDropStyle={styles.backdropStyle}
+                        visible={this.state.isShowCountriesModal}
+                        animationIn={'fadeIn'}
+                        animationOut={'fadeOut'}
+                        hideBackDrop={false}
+                        duration={300}
+                        useNativeDriver={true}
+                        onCloseRequest={this._onCloseCountriesModal}>
                         <View style={[styles.modal, modalRootStyle]}>
                             <View style={styles.modal_content}>
                               {this.props.showSearchInput ?                         
@@ -908,7 +914,13 @@ const triangleContainerBase = {
 };
 
 var styles = StyleSheet.create({
-    container: {},
+    contentContainerStyle: {
+        flex: 1,
+        width: '100%',
+    },
+    backdropStyle: {
+        backgroundColor: 'rgba(112, 84, 79, 0.5)',
+    },
     row: {
         flexDirection: 'row',
         alignItems: 'center'
