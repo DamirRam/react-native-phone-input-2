@@ -963,7 +963,6 @@ var styles = StyleSheet.create({
     modal_control: {
         padding: 16,
         flexDirection: 'row-reverse',
-        height: 48,
     },
     modal_btn_close: {
         paddingLeft: 16,
